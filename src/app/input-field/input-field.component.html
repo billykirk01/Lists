@@ -1,0 +1,1 @@
+<input *ngIf="user && user.currentList" class="field" (keydown)="addTask($event)" placeholder="New item" [hidden]="!user">

@@ -1,0 +1,12 @@
+<button *ngIf="!user" mat-flat-button (click)="logInButtonClicked()" [disableRipple]="'true'">
+  <mat-icon>account_circle</mat-icon>
+  <span class="uk-margin-small-left">Log In</span>
+</button>
+<button *ngIf="user" mat-flat-button class="uk-padding-remove-right" [matMenuTriggerFor]="menu" [disableRipple]="'true'">
+  <img class="profile-image" [src]="user.photoURL">
+</button>
+<mat-menu #menu="matMenu" class="uk-padding-remove" [xPosition]="'before'">
+  <button mat-menu-item class="uk-padding-remove-right" (click)="logOutButtonClicked()">
+    <span>Log Out</span>
+  </button>
+</mat-menu>

@@ -1,0 +1,9 @@
+<app-item *ngFor="let item of incompleteItems | async" [item]="item"></app-item>
+
+<div class="uk-text-center">
+    <button mat-button class="show-completed-button" (click)="showCompleted = !showCompleted" [hidden]="completedItemsLength == 0">
+        ShowCompleted
+    </button>
+</div>
+
+<app-item *ngFor="let item of completedItems | async" [item]="item" [hidden]="!showCompleted"></app-item>

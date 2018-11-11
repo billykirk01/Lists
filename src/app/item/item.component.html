@@ -1,0 +1,7 @@
+<div class="task">
+  <mat-checkbox class="uk-margin-small-left uk-margin-small-right" [checked]="item.completed" (change)="checkboxChanged($event)"></mat-checkbox>
+  <input class="task-name-field uk-text-middle" [value]="item.name" (blur)="finishedEditingItem($event)">
+  <button mat-button matSuffix mat-icon-button class="delete-button" (click)="deleteItem()">
+    <mat-icon class="uk-text-middle">close</mat-icon>
+  </button>
+</div>

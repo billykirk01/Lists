@@ -1,0 +1,9 @@
+<mat-toolbar class="toolbar">
+  <app-dropdown-menu [user]="user" [items]="lists" [selectedItemID]="currentList" [selectedItemName]="currentListName"
+    [menuIcon]="'assignment'" [selectedIcon]="'bookmark'" [unselectedIcon]="'bookmark_border'" [newItemIcon]="'assignment'"
+    [newItemLabel]="'New List'" [defaultLabel]="'Choose a list'" (newItemClicked)="addList()" (selectionMade)="changeList($event)"
+    (itemDeleted)="deleteList($event)">
+  </app-dropdown-menu>
+  <span class="uk-width-expand"></span>
+  <app-user-menu [user]="user" (LogIn)="logInButtonClicked()" (LogOut)="logOutButtonClicked()"></app-user-menu>
+</mat-toolbar>
