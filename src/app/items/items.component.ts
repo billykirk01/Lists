@@ -22,6 +22,8 @@ export class ItemsComponent implements OnChanges {
     completedItemsLength: Number
   };
 
+  showCompleted: Boolean
+
   constructor(private database: ItemsService) {
     this.completedItemsMeta = { completedItemsLength: 0 }
   }
