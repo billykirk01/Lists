@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { item } from 'src/models/item';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { ItemsService } from '../core/items.service';
 
 @Component({
   selector: 'app-item',
@@ -12,26 +12,18 @@ export class ItemComponent {
 
   @Input() item: item;
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private database: ItemsService) { }
 
   checkboxChanged(event: MatCheckboxChange) {
-    const itemRef: AngularFirestoreDocument<any> = this.db.doc(`items/${this.item.id}`);
-    const data = {
-      completed: event.checked,
-    }
-    return itemRef.set(data, { merge: true })
+    this.database.editItemStatus(this.item, event.checked);
   }
 
   finishedEditingItem(event: any) {
-    const itemRef: AngularFirestoreDocument<any> = this.db.doc(`items/${this.item.id}`);
-    const data = {
-      name: event.target.value
-    }
-    return itemRef.set(data, { merge: true })
+    this.database.editItemName(this.item, event.target.value);
   }
 
   deleteItem() {
-    this.db.doc<item>(`items/${this.item.id}`).delete();
+    this.database.deleteItem(this.item);
   }
 
 }

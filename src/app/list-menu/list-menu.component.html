@@ -1,0 +1,25 @@
+<button mat-flat-button *ngIf="!user" class="dropdown-button" [disableRipple]="'true'">
+  <mat-icon>assignment</mat-icon>
+</button>
+<button mat-flat-button *ngIf="user" class="dropdown-button" [matMenuTriggerFor]="menu" [disableRipple]="'true'">
+  <mat-icon>assignment</mat-icon>
+  <span class="uk-margin-small-left">{{ user.currentListName || 'Choose list' }}</span>
+</button>
+<mat-menu #menu="matMenu">
+  <div mat-menu-item *ngFor="let list of lists | async" class="menu-item">
+    <div mat-button (click)="changeList(list)">
+      <mat-icon *ngIf="list.id==user?.currentList" class="menu-item-icon">bookmark</mat-icon>
+      <mat-icon *ngIf="list.id!=user?.currentList" class="menu-item-icon">bookmark_border</mat-icon>
+      <span class="menu-item-label">{{ list.name }}</span>
+    </div>
+    <div (click)="deleteList(list)">
+      <button mat-button mat-icon-button class="menu-item-delete-icon">
+        <mat-icon class="uk-margin-remove-right">close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <button mat-menu-item (click)="newList()">
+    <mat-icon>assignment</mat-icon>
+    <span>New List</span>
+  </button>
+</mat-menu>

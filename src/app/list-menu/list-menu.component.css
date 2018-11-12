@@ -1,0 +1,25 @@
+.dropdown-button {
+    padding-left: 5px;
+}
+
+.menu-item {
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto 40px;
+}
+
+.menu-item-icon {
+    padding-left: 15px;
+    margin-right: 10px !important;
+}
+
+.menu-item-label {
+    padding-right: 10px;
+}
+
+.menu-item-delete-icon {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}

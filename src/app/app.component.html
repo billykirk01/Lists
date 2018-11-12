@@ -1,5 +1,5 @@
 <div class="container">
     <app-toolbar [user]="user" (LogIn)="logIn()" (LogOut)="logOut()"></app-toolbar>
-    <app-input-field [user]="user"></app-input-field>
-    <app-items [user]="user"></app-items>
+    <app-input-field *ngIf="user" [user]="user"></app-input-field>
+    <app-items *ngIf="user" [user]="user"></app-items>
 </div>

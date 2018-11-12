@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { AuthService } from './auth.service';
+import { ItemsService } from './items.service'
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
@@ -10,6 +10,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  providers: [AuthService]
+  providers: [AuthService, ItemsService]
 })
 export class CoreModule { }
