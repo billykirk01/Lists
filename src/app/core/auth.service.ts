@@ -35,11 +35,11 @@ export class AuthService {
   private oAuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.updateUserData(credential.user)
+        this.updateOrCreateUserData(credential.user)
       })
   }
 
-  private updateUserData(user) {
+  private updateOrCreateUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
     const data: user = {
@@ -54,6 +54,10 @@ export class AuthService {
   }
 
   signOut() {
-    this.afAuth.auth.signOut()
+    this.afAuth.auth.signOut().then(() => {
+      localStorage.clear();
+      window.location.reload();
+    })
+
   }
 }

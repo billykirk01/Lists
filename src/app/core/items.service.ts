@@ -50,7 +50,7 @@ export class ItemsService {
 
   getIncompleteItems(user: user) {
     let incompleteItemsCollection = this.db.collection<item>('items', ref => {
-      return ref.where('owningList', '==', user.currentList).where('completed', '==', false).orderBy('addInstant', 'asc')
+      return ref.where('owningUser', '==', user.uid).where('owningList', '==', user.currentList).where('completed', '==', false).orderBy('addInstant', 'asc')
     });
     return incompleteItemsCollection.snapshotChanges().pipe(map(incompleteTasks => {
       return incompleteTasks.map(task => {
@@ -63,7 +63,7 @@ export class ItemsService {
 
   getcompletedItems(user: user, completedItemsMetaData: any) {
     let completedItemsCollection = this.db.collection<item>('items', ref => {
-      return ref.where('owningList', '==', user.currentList).where('completed', '==', true).orderBy('addInstant', 'asc')
+      return ref.where('owningUser', '==', user.uid).where('owningList', '==', user.currentList).where('completed', '==', true).orderBy('addInstant', 'asc')
     });
     return completedItemsCollection.snapshotChanges().pipe(map(completedItems => {
       completedItemsMetaData.completedItemsLength = completedItems.length;
