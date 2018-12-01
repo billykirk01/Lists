@@ -123,16 +123,6 @@ export class ItemsService {
 
   deleteList(user: user, list: list) {
 
-    this.db.collection('items').ref.where('owningList', '==', list.id).get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          doc.ref.delete()
-        });
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-
     this.db.doc<list>(`lists/${list.id}`).delete();
     if (list.id == user.currentList) {
       const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
