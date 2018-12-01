@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/Lists-darwin-x64
 
 # dependencies
 /node_modules
