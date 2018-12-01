@@ -1,0 +1,40 @@
+{
+  "indexes": [
+    {
+      "collectionId": "lists",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "owningUser",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "addInstant",
+          "mode": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionId": "items",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "completed",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "owningList",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "owningUser",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "addInstant",
+          "mode": "ASCENDING"
+        }
+      ]
+    }
+  ]
+}
