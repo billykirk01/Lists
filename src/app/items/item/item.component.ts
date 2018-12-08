@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { item } from 'src/models/item';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ItemsService } from '../core/items.service';
+import { ItemsService } from '../../core/items.service';
 
 @Component({
   selector: 'app-item',

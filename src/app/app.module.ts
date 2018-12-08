@@ -4,12 +4,15 @@ import { CoreModule } from './core/core.module';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { ItemComponent } from './item/item.component';
+
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { InputFieldComponent } from './input-field/input-field.component';
+import { UserMenuComponent } from './toolbar/user-menu/user-menu.component';
+import { ListMenuComponent } from './toolbar/list-menu/list-menu.component';
+import { NewListComponent } from './toolbar/new-list/new-list.component';
+
 import { ItemsComponent } from './items/items.component';
-import { UserMenuComponent } from './user-menu/user-menu.component';
-import { NewListComponent } from './new-list/new-list.component';
+import { ItemComponent } from './items/item/item.component';
+import { InputFieldComponent } from './items/input-field/input-field.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore'
@@ -20,7 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { ListMenuComponent } from './list-menu/list-menu.component';
+
 
 @NgModule({
   declarations: [

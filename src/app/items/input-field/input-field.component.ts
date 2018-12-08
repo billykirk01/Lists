@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { user } from 'src/models/user';
-import { ItemsService } from '../core/items.service'
+import { ItemsService } from '../../core/items.service'
 
 @Component({
   selector: 'app-input-field',

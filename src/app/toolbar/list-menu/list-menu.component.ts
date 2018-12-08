@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { user } from 'src/models/user';
-import { ItemsService } from '../core/items.service';
+import { ItemsService } from '../../core/items.service';
 import { Observable } from 'rxjs';
 import { list } from 'src/models/list';
 

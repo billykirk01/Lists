@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { ItemsService } from '../core/items.service';
+import { ItemsService } from '../../core/items.service';
 
 @Component({
   selector: 'app-new-list',
