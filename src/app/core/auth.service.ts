@@ -25,6 +25,10 @@ export class AuthService {
       })
     )
 
+    this.user.subscribe(
+      user => localStorage.setItem('user', JSON.stringify(user))
+    )
+
   }
 
   googleLogin() {
@@ -60,4 +64,5 @@ export class AuthService {
     })
 
   }
+
 }

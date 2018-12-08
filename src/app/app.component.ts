@@ -12,6 +12,7 @@ export class AppComponent {
   user: user;
 
   constructor(public auth: AuthService) {
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.fetchLoggedInUser();
   }
 

@@ -21,7 +21,9 @@ export class ListMenuComponent implements OnChanges {
   constructor(private database: ItemsService, private bottomSheet: MatBottomSheet) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.getLists();
+    if (!changes.user.previousValue || changes.user.currentValue.currentList != changes.user.previousValue.currentList) {
+      this.getLists();
+    }
   }
 
   getLists() {

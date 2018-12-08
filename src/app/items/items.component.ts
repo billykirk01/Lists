@@ -29,8 +29,10 @@ export class ItemsComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.getIncompleteItems();
-    this.getCompletedItems();
+    if (changes.user.currentValue.currentList && (!changes.user.previousValue || changes.user.currentValue.currentList != changes.user.previousValue.currentList)) {
+      this.getIncompleteItems();
+      this.getCompletedItems();
+    }
   }
 
   getIncompleteItems() {
