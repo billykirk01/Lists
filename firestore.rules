@@ -2,19 +2,19 @@ service cloud.firestore {
   match /databases/{database}/documents {
   
   	match /users/{user} {
-    	allow read : if request.path[4] == request.auth.uid
-    	allow update, delete: if request.auth.uid == resource.data.uid;
-    	allow create: if request.auth.uid != null;
-    }
-  
-    match /items/{item} {
-      allow read, update, delete: if request.auth.uid == resource.data.owningUser;
-    	allow create: if request.auth.uid != null;
+    	// allow read : if request.path[4] == request.auth.uid || request.auth.uid  in resource.data.friends;
+    	allow  delete: if request.auth.uid == resource.data.uid;
+    	allow read, update, create: if request.auth.uid != null;
     }
     
     match /lists/{list} {
-    	allow read, update, delete: if request.auth.uid == resource.data.owningUser;
-    	allow create: if request.auth.uid != null;
+    	allow read, update, delete: if request.auth.uid == resource.data.owningUser || request.auth.uid  in resource.data.sharedUsers;
+    	allow read, create: if request.auth.uid != null;
     }
+  
+    match /items/{item} {
+    	allow read, update, delete, create: if request.auth.uid != null;
+    }
+
   }
 }

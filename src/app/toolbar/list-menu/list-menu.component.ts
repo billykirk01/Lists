@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { list } from 'src/models/list';
 
 import { NewListComponent } from '../new-list/new-list.component'
+import { ListManagerComponent } from '../../list-manager/list-manager.component'
 import { MatBottomSheet } from '@angular/material';
 
 @Component({
@@ -15,6 +16,8 @@ import { MatBottomSheet } from '@angular/material';
 export class ListMenuComponent implements OnChanges {
 
   @Input() user: user;
+
+  @Input() friends: Observable<user[]>;
 
   lists: Observable<list[]>;
 
@@ -46,5 +49,14 @@ export class ListMenuComponent implements OnChanges {
     this.database.deleteList(this.user, list);
   }
 
+  manageList(list: list, user: user) {
+    this.bottomSheet.open(ListManagerComponent, {
+      data: {
+        friends: this.friends,
+        list: list,
+        user: user
+      }
+    });
+  }
 
 }

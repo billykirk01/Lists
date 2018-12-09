@@ -5,9 +5,12 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 
 import { map } from 'rxjs/operators'
 
+import { combineLatest } from 'rxjs';
+
 import { user } from 'src/models/user';
 import { list } from 'src/models/list';
 import { item } from 'src/models/item';
+
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +53,7 @@ export class ItemsService {
 
   getIncompleteItems(user: user) {
     let incompleteItemsCollection = this.db.collection<item>('items', ref => {
-      return ref.where('owningUser', '==', user.uid).where('owningList', '==', user.currentList).where('completed', '==', false).orderBy('addInstant', 'asc')
+      return ref.where('owningList', '==', user.currentList).where('completed', '==', false).orderBy('addInstant', 'asc')
     });
     return incompleteItemsCollection.snapshotChanges().pipe(map(incompleteTasks => {
       return incompleteTasks.map(task => {
@@ -63,7 +66,7 @@ export class ItemsService {
 
   getcompletedItems(user: user, completedItemsMetaData: any) {
     let completedItemsCollection = this.db.collection<item>('items', ref => {
-      return ref.where('owningUser', '==', user.uid).where('owningList', '==', user.currentList).where('completed', '==', true).orderBy('addInstant', 'asc')
+      return ref.where('owningList', '==', user.currentList).where('completed', '==', true).orderBy('addInstant', 'asc')
     });
     return completedItemsCollection.snapshotChanges().pipe(map(completedItems => {
       completedItemsMetaData.completedItemsLength = completedItems.length;
@@ -78,17 +81,31 @@ export class ItemsService {
   getLists(user: user) {
     let listsCollection = this.db.collection<list>('lists', ref => {
       return ref.where('owningUser', '==', user.uid).orderBy('addInstant', 'asc')
-    });
-    return listsCollection.snapshotChanges().pipe(map(actions => {
+    }).snapshotChanges().pipe(map(actions => {
       return actions.map(a => {
         const data = a.payload.doc.data() as list;
         const id = a.payload.doc.id;
         return { id, ...data };
       });
-    }));
+    }));;
+
+    let sharedListsCollection = this.db.collection<list>('lists', ref => {
+      return ref.where('sharedUsers', 'array-contains', user.uid).orderBy('addInstant', 'asc')
+    }).snapshotChanges().pipe(map(actions => {
+      return actions.map(a => {
+        const data = a.payload.doc.data() as list;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      });
+    }));;
+
+    return combineLatest<any[]>(listsCollection, sharedListsCollection).pipe(
+      map(arr => arr.reduce((acc, cur) => acc.concat(cur)))
+    )
+
   }
 
-  addList(user: user, listName: String) {
+  addList(user: user, listName: string) {
     let listsCollection = this.db.collection<list>('lists');
     var newListName = listName;
     const list: list = {
@@ -111,6 +128,24 @@ export class ItemsService {
     )
   }
 
+  renameList(user: user, list: list, listName: String) {
+    const listRef: AngularFirestoreDocument<any> = this.db.doc(`lists/${list.id}`);
+    listRef.update({
+      name: listName
+    })
+
+    if (list.id == user.currentList) {
+      const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
+      const data = {
+        currentList: list.id,
+        currentListName: listName
+      }
+
+      userRef.set(data, { merge: true })
+    }
+  }
+
+
   changeList(user: user, list: list) {
     const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
     const data = {
@@ -121,8 +156,16 @@ export class ItemsService {
     return userRef.set(data, { merge: true })
   }
 
-  deleteList(user: user, list: list) {
+  shareList(list: list, users: user[]) {
+    if (users.length > 0) {
+      let userIDs = users.map(user => user.uid)
+      this.db.collection('lists').doc(list.id).update({
+        sharedUsers: userIDs
+      })
+    }
+  }
 
+  deleteList(user: user, list: list) {
     this.db.doc<list>(`lists/${list.id}`).delete();
     if (list.id == user.currentList) {
       const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
@@ -133,6 +176,10 @@ export class ItemsService {
 
       return userRef.set(data, { merge: true })
     }
+  }
+
+  getUser(userID: string) {
+    return this.db.doc<user>(`users/${userID}`).valueChanges()
   }
 }
 

@@ -1,6 +1,6 @@
 export interface list {
-    id?: String;
-    name: String;
-    owningUser: String;
+    id?: string;
+    name: string;
+    owningUser: string;
     addInstant: firebase.firestore.FieldValue;
 }

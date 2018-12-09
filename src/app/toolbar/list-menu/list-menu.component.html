@@ -12,9 +12,9 @@
       <mat-icon *ngIf="list.id!=user?.currentList" class="menu-item-icon">bookmark_border</mat-icon>
       <span class="menu-item-label">{{ list.name }}</span>
     </div>
-    <div (click)="deleteList(list)">
+    <div *ngIf="list.owningUser == user.uid" (click)="manageList(list, user)">
       <button mat-button mat-icon-button class="menu-item-delete-icon">
-        <mat-icon class="uk-margin-remove-right">close</mat-icon>
+        <mat-icon class="uk-margin-remove-right">settings</mat-icon>
       </button>
     </div>
   </div>

@@ -1,0 +1,56 @@
+h3 {
+    margin-bottom: 10px;
+}
+
+.container {
+    overflow: hidden;
+}
+
+.add-icon {
+    margin-left: 5px;
+}
+
+.friends-header {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.pending-container {
+    margin-bottom: 10px;
+}
+
+.pending-list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 65% 20% 15%;
+    padding: 20px 0;
+}
+
+.friends-header-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 80% 20%;
+
+}
+
+.friends-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    padding: 20px 0;
+}
+
+.friend-name {
+    padding: 10px 0;
+}
+
+.action-button {
+    text-align: right;
+}
+
+.add-friends-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}

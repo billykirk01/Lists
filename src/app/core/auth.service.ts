@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { firestore } from 'firebase/app'
 
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -12,6 +13,9 @@ import { user } from 'src/models/user';
 export class AuthService {
 
   user: Observable<user>;
+
+  friends: Observable<user[]>;
+  pendingFriends: Observable<user[]>;
 
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
 
@@ -43,7 +47,7 @@ export class AuthService {
       })
   }
 
-  private updateOrCreateUserData(user) {
+  private updateOrCreateUserData(user: user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
     const data: user = {
@@ -55,6 +59,63 @@ export class AuthService {
 
     return userRef.set(data, { merge: true })
 
+  }
+
+  getFriends(user: user) {
+    if (user) {
+      this.friends = this.afs.collection('users', ref => ref.where('friends', 'array-contains', user.uid)).valueChanges()
+    }
+  }
+
+  getPendingFriends(user: user) {
+    if (user) {
+      this.pendingFriends = this.afs.collection('users', ref => ref.where('pendingFriends', 'array-contains', user.uid)).valueChanges()
+    }
+  }
+
+  sendFriendRequest(user: user, email: string) {
+
+    let recipientDoc = this.afs.collection('users', (ref) => ref.where('email', '==', email).limit(1)).valueChanges();
+
+    recipientDoc.subscribe((_user: any) => {
+      if (_user[0].uid) {
+        const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+
+        userRef.update({
+          pendingFriends: firestore.FieldValue.arrayUnion(_user[0].uid)
+        })
+      }
+    });
+  }
+
+  acceptFriendRequest(user: user, uid: string) {
+    this.afs.collection('users').doc(uid).update({
+      friends: firestore.FieldValue.arrayUnion(user.uid)
+    })
+
+    this.afs.collection('users').doc(user.uid).update({
+      friends: firestore.FieldValue.arrayUnion(uid)
+    })
+
+    this.afs.collection('users').doc(uid).update({
+      pendingFriends: firestore.FieldValue.arrayRemove(user.uid)
+    })
+  }
+
+  declineFriendRequest(user: user, uid: string) {
+    this.afs.collection('users').doc(uid).update({
+      pendingFriends: firestore.FieldValue.arrayRemove(user.uid)
+    })
+  }
+
+  removeFriend(user: user, uid: string) {
+    this.afs.collection('users').doc(user.uid).update({
+      friends: firestore.FieldValue.arrayRemove(uid)
+    })
+
+    this.afs.collection('users').doc(uid).update({
+      friends: firestore.FieldValue.arrayRemove(user.uid)
+    })
   }
 
   signOut() {

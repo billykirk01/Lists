@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { user } from 'src/models/user';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,6 +10,10 @@ import { user } from 'src/models/user';
 export class ToolbarComponent {
 
   @Input() user: user;
+
+  @Input() friends: Observable<user[]>;
+
+  @Input() pendingFriends: Observable<user[]>;
 
   @Output('LogIn')
   _logInButtonClicked = new EventEmitter();

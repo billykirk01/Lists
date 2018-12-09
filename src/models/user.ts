@@ -1,8 +1,8 @@
 export interface user {
-    displayName?: String;
-    email?: String;
-    photoURL?: String;
-    uid?: String;
-    currentList?: String;
-    currentListName?: String;
+    displayName?: string;
+    email?: string;
+    photoURL?: string;
+    uid?: string;
+    currentList?: string;
+    currentListName?: string;
 }
