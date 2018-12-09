@@ -2,7 +2,7 @@
   <mat-list-item (click)="findFriends()">
     <mat-icon mat-list-icon>group_add</mat-icon>
     <h4 mat-line>Find friends</h4>
-    <p mat-line>Add friends so that you can share lists with them</p>
+    <p mat-line>Add friends to share lists with.</p>
   </mat-list-item>
 
   <mat-list-item *ngIf="(this.pendingFriends | async)?.length as count" (click)="pendingRequests()">
@@ -19,7 +19,7 @@
 
   <mat-list-item (click)="logOut()">
     <mat-icon mat-list-icon>exit_to_app</mat-icon>
-    <h4 mat-line>Logout</h4>
-    <p mat-line>Logout of the application</p>
+    <h4 mat-line>Log out</h4>
+    <p mat-line>Log out of the application</p>
   </mat-list-item>
 </mat-nav-list>
