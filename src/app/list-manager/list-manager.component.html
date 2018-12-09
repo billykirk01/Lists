@@ -1,19 +1,15 @@
 <mat-nav-list>
-  <mat-list-item (click)="renameList()">
-    <mat-icon mat-list-icon>create</mat-icon>
-    <h4 mat-line>Rename</h4>
-    <p mat-line>Change the name of the list</p>
+  <mat-list-item *ngFor="let list of this.data.lists | async">
+    <mat-icon (click)="changeList(list)" mat-list-icon *ngIf="list.id==this.data.user?.currentList">bookmark</mat-icon>
+    <mat-icon (click)="changeList(list)" mat-list-icon *ngIf="list.id!=this.data.user?.currentList">bookmark_border</mat-icon>
+    <h4 mat-line (click)="changeList(list)">{{list.name}}</h4>
+    <p mat-line (click)="changeList(list)">{{list.owningUserName}}</p>
+    <button *ngIf="list.owningUser == this.data.user.uid" mat-icon-button (click)="openListDetail(list)">
+      <mat-icon>settings</mat-icon>
+    </button>
   </mat-list-item>
-
-  <mat-list-item (click)="shareList()">
-    <mat-icon mat-list-icon>share</mat-icon>
-    <h4 mat-line>Share</h4>
-    <p mat-line>Share this list with your friends</p>
-  </mat-list-item>
-
-  <mat-list-item (click)="deleteList()">
-    <mat-icon mat-list-icon>delete</mat-icon>
-    <h4 mat-line>Delete</h4>
-    <p mat-line>Delete this list and it's associated items</p>
+  <mat-list-item (click)="newList()">
+    <mat-icon (click)="newList()" mat-list-icon>assignment</mat-icon>
+    <h4 mat-line>New List</h4>
   </mat-list-item>
 </mat-nav-list>

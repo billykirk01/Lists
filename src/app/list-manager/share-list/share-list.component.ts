@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { user } from 'src/models/user';
+import { list } from 'src/models/list';
 
 @Component({
   selector: 'app-share-list',
@@ -14,17 +15,22 @@ import { user } from 'src/models/user';
 })
 export class ShareListComponent {
 
-  constructor(private database: ItemsService, private bottomSheet: MatBottomSheet, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
-    if (this.data.list.sharedUsers) {
-      for (let sharedUser of this.data.list.sharedUsers) {
-        this.database.getUser(sharedUser).subscribe((user) => {
-          this.selectedFriends.push(user)
-        })
-      }
-    }
-  }
+  list: list;
 
   selectedFriends: user[] = [];
+
+  constructor(private database: ItemsService, private bottomSheet: MatBottomSheet, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
+    this.database.getList(this.data.list.id).subscribe(list => {
+      this.list = list
+      if (list.sharedUsers.length) {
+        for (let sharedUser of list.sharedUsers) {
+          this.database.getUser(sharedUser).subscribe((user) => {
+            this.selectedFriends.push(user)
+          })
+        }
+      }
+    })
+  }
 
   selectionChange(event: MatSelectChange) {
     if (this.selectedFriends.some(friend => friend.uid === event.value.uid)) {
@@ -41,7 +47,9 @@ export class ShareListComponent {
   }
 
   ngOnDestroy(): void {
-    this.database.shareList(this.data.list, this.selectedFriends)
+    if (this.list.sharedUsers != this.selectedFriends) {
+      this.database.shareList(this.data.list, this.selectedFriends)
+    }
   }
 
 }

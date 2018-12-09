@@ -7,6 +7,7 @@ import { list } from 'src/models/list';
 import { NewListComponent } from '../new-list/new-list.component'
 import { ListManagerComponent } from '../../list-manager/list-manager.component'
 import { MatBottomSheet } from '@angular/material';
+import { ListDetailComponent } from 'src/app/list-manager/list-detail/list-detail.component';
 
 @Component({
   selector: 'app-list-menu',
@@ -35,28 +36,17 @@ export class ListMenuComponent implements OnChanges {
     }
   }
 
-  changeList(list: list) {
-    this.database.changeList(this.user, list);
-  }
 
-  newList() {
-    this.bottomSheet.open(NewListComponent, {
-      data: { user: this.user }
-    });
-  }
-
-  deleteList(list: list) {
-    this.database.deleteList(this.user, list);
-  }
-
-  manageList(list: list, user: user) {
+  openListManager() {
     this.bottomSheet.open(ListManagerComponent, {
       data: {
         friends: this.friends,
-        list: list,
-        user: user
-      }
+        lists: this.lists,
+        user: this.user
+      },
+      autoFocus: false
     });
   }
+
 
 }

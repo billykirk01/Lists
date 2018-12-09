@@ -13,6 +13,7 @@ import { AddFriendComponent } from './friends-manager/add-friend/add-friend.comp
 import { ListMenuComponent } from './toolbar/list-menu/list-menu.component';
 import { NewListComponent } from './toolbar/new-list/new-list.component';
 import { ListManagerComponent } from './list-manager/list-manager.component';
+import { ListDetailComponent } from './list-manager/list-detail/list-detail.component';
 import { RenameListComponent } from './list-manager/rename-list/rename-list.component';
 import { ShareListComponent } from './list-manager/share-list/share-list.component';
 
@@ -51,7 +52,8 @@ import { MatSelectModule } from '@angular/material/select';
     RenameListComponent,
     FriendsManagerComponent,
     AddFriendComponent,
-    ShareListComponent
+    ShareListComponent,
+    ListDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +78,7 @@ import { MatSelectModule } from '@angular/material/select';
   entryComponents: [
     NewListComponent,
     ListManagerComponent,
+    ListDetailComponent,
     RenameListComponent,
     FriendsManagerComponent,
     AddFriendComponent,

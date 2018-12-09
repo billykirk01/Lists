@@ -5,7 +5,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 
 import { map } from 'rxjs/operators'
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 import { user } from 'src/models/user';
 import { list } from 'src/models/list';
@@ -105,12 +105,18 @@ export class ItemsService {
 
   }
 
+  getList(listID: string): Observable<list> {
+    return this.db.collection('lists').doc(listID).valueChanges() as Observable<list>
+  }
+
   addList(user: user, listName: string) {
     let listsCollection = this.db.collection<list>('lists');
     var newListName = listName;
     const list: list = {
       name: newListName,
       owningUser: user.uid,
+      owningUserName: user.displayName,
+      sharedUsers: [],
       addInstant: firestore.FieldValue.serverTimestamp(),
     }
     listsCollection.add(list).then(
@@ -157,8 +163,8 @@ export class ItemsService {
   }
 
   shareList(list: list, users: user[]) {
-    if (users.length > 0) {
-      let userIDs = users.map(user => user.uid)
+    let userIDs = users.map(user => user.uid)
+    if (userIDs.toString() != list.sharedUsers.toString()) {
       this.db.collection('lists').doc(list.id).update({
         sharedUsers: userIDs
       })
