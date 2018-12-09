@@ -15,11 +15,12 @@ import { user } from 'src/models/user';
 export class ShareListComponent {
 
   constructor(private database: ItemsService, private bottomSheet: MatBottomSheet, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
-
-    for (let sharedUser of this.data.list.sharedUsers) {
-      this.database.getUser(sharedUser).subscribe((user) => {
-        this.selectedFriends.push(user)
-      })
+    if (this.data.list.sharedUsers) {
+      for (let sharedUser of this.data.list.sharedUsers) {
+        this.database.getUser(sharedUser).subscribe((user) => {
+          this.selectedFriends.push(user)
+        })
+      }
     }
   }
 

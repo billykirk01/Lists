@@ -1,4 +1,4 @@
-<mat-form-field class="container">
+<mat-form-field class="input-container">
   <mat-select placeholder="Friend" (selectionChange)="selectionChange($event)">
     <mat-option *ngFor="let friend of this.data.friends | async" [value]="friend">
       {{friend.displayName}}
@@ -6,10 +6,10 @@
   </mat-select>
 </mat-form-field>
 
-<div class="container">
+<div class="chips-container">
   <mat-chip-list #chipList>
     <span class="sharing-with-label">Sharing with:</span>
-    <mat-chip *ngFor="let friend of selectedFriends; index as i" (removed)="remove(i)">
+    <mat-chip color="accent" selected *ngFor="let friend of selectedFriends; index as i" (removed)="remove(i)">
       {{friend.displayName}}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>

@@ -1,27 +1,23 @@
 <mat-list class="container">
   <h3 mat-header *ngIf="(this.data.pendingFriends | async)?.length">Pending Requests</h3>
-  <mat-list-item *ngFor="let friend of this.data.pendingFriends | async" class="pending-container">
-    <div class="pending-list">
-      <span class="friend-name">{{friend.displayName}}</span>
-      <button mat-icon-button color="primary" (click)="acceptRequest(friend)">
-        <mat-icon>done</mat-icon>
-      </button>
-      <button mat-icon-button color="accent" (click)="declineRequest(friend)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-  </mat-list-item>
+  <div *ngFor="let friend of this.data.pendingFriends | async" class="pending-friends-container">
+    <span class="friend-name">{{friend.displayName}}</span>
+    <button mat-icon-button color="primary" (click)="acceptRequest(friend)">
+      <mat-icon>done</mat-icon>
+    </button>
+    <button mat-icon-button color="accent" (click)="declineRequest(friend)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
   <div class="friends-header-container">
     <h3 mat-header>Friends</h3>
   </div>
-  <mat-list-item *ngFor="let friend of this.data.friends | async">
-    <div class="friends-container">
-      <span class="friend-name">{{friend.displayName}}</span>
-      <button mat-icon-button color="accent" (click)="removeFriend(friend)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-  </mat-list-item>
+  <div *ngFor="let friend of this.data.friends | async" class="friends-container">
+    <span class="friend-name">{{friend.displayName}}</span>
+    <button mat-icon-button color="accent" (click)="removeFriend(friend)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
   <div class="add-friends-container">
     <button mat-raised-button (click)="addFriend(this.data.user)" color="primary">Add a new friend</button>
   </div>
