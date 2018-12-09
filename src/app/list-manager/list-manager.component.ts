@@ -2,9 +2,7 @@ import { Component, Inject } from '@angular/core';
 
 import { MatBottomSheet } from '@angular/material';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { RenameListComponent } from './rename-list/rename-list.component';
 import { ItemsService } from '../core/items.service';
-import { ShareListComponent } from './share-list/share-list.component';
 import { list } from 'src/models/list';
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { NewListComponent } from '../toolbar/new-list/new-list.component';

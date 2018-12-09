@@ -11,22 +11,11 @@ export class ToolbarComponent {
 
   @Input() user: user;
 
-  @Input() friends: Observable<user[]>;
-
-  @Input() pendingFriends: Observable<user[]>;
-
   @Output('LogIn')
   _logInButtonClicked = new EventEmitter();
 
-  @Output('LogOut')
-  _logOutButtonClicked = new EventEmitter();
-
   logInButtonClicked() {
     this._logInButtonClicked.emit()
-  }
-
-  logOutButtonClicked() {
-    this._logOutButtonClicked.emit()
   }
 
 }

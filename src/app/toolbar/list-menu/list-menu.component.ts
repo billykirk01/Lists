@@ -1,13 +1,12 @@
 import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { user } from 'src/models/user';
 import { ItemsService } from '../../core/items.service';
+import { AuthService } from '../../core/auth.service';
 import { Observable } from 'rxjs';
 import { list } from 'src/models/list';
-
-import { NewListComponent } from '../new-list/new-list.component'
 import { ListManagerComponent } from '../../list-manager/list-manager.component'
 import { MatBottomSheet } from '@angular/material';
-import { ListDetailComponent } from 'src/app/list-manager/list-detail/list-detail.component';
+
 
 @Component({
   selector: 'app-list-menu',
@@ -18,31 +17,29 @@ export class ListMenuComponent implements OnChanges {
 
   @Input() user: user;
 
-  @Input() friends: Observable<user[]>;
+  friends: Observable<user[]>;
 
   lists: Observable<list[]>;
 
-  constructor(private database: ItemsService, private bottomSheet: MatBottomSheet) { }
+  constructor(private database: ItemsService, private auth: AuthService, private bottomSheet: MatBottomSheet) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    //check if user exists to prevent logout error
+    if (!changes.user.currentValue) {
+      return
+    }
     if (!changes.user.previousValue || changes.user.currentValue.currentList != changes.user.previousValue.currentList) {
-      this.getLists();
-    }
-  }
-
-  getLists() {
-    if (this.user) {
       this.lists = this.database.getLists(this.user);
+      this.friends = this.auth.getFriends(this.user);
     }
   }
-
 
   openListManager() {
     this.bottomSheet.open(ListManagerComponent, {
       data: {
+        user: this.user,
         friends: this.friends,
         lists: this.lists,
-        user: this.user
       },
       autoFocus: false
     });

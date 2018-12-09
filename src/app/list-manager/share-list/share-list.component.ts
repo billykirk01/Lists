@@ -1,10 +1,6 @@
-import { Component, Inject, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ItemsService } from 'src/app/core/items.service';
-import { MatBottomSheet, MAT_BOTTOM_SHEET_DATA, MatChipInputEvent, MatAutocomplete, MatAutocompleteSelectedEvent, MatSelectChange } from '@angular/material';
-import { Observable } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MAT_BOTTOM_SHEET_DATA, MatSelectChange } from '@angular/material';
 import { user } from 'src/models/user';
 import { list } from 'src/models/list';
 
@@ -19,7 +15,7 @@ export class ShareListComponent {
 
   selectedFriends: user[] = [];
 
-  constructor(private database: ItemsService, private bottomSheet: MatBottomSheet, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
+  constructor(private database: ItemsService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
     this.database.getList(this.data.list.id).subscribe(list => {
       this.list = list
       if (list.sharedUsers.length) {

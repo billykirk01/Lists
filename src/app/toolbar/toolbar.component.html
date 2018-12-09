@@ -1,6 +1,5 @@
 <mat-toolbar class="toolbar">
-  <app-list-menu [user]="user" [friends]="friends"></app-list-menu>
+  <app-list-menu [user]="user"></app-list-menu>
   <span class="uk-width-expand"></span>
-  <app-user-menu [user]="user" [friends]="friends" [pendingFriends]="pendingFriends" (LogIn)="logInButtonClicked()"
-    (LogOut)="logOutButtonClicked()"></app-user-menu>
+  <app-user-menu [user]="user" (LogIn)="logInButtonClicked()"></app-user-menu>
 </mat-toolbar>

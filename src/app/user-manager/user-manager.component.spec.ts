@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FriendsManagerComponent } from './freinds-manager.component';
+import { UserManagerComponent } from './user-manager.component';
 
-describe('FriendsManagerComponent', () => {
-  let component: FriendsManagerComponent;
-  let fixture: ComponentFixture<FriendsManagerComponent>;
+describe('UserManagerComponent', () => {
+  let component: UserManagerComponent;
+  let fixture: ComponentFixture<UserManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FriendsManagerComponent]
+      declarations: [UserManagerComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FriendsManagerComponent);
+    fixture = TestBed.createComponent(UserManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

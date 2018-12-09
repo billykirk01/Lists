@@ -7,8 +7,10 @@ import { AppComponent } from './app.component';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { UserMenuComponent } from './toolbar/user-menu/user-menu.component';
-import { FriendsManagerComponent } from './friends-manager/freinds-manager.component';
-import { AddFriendComponent } from './friends-manager/add-friend/add-friend.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { AddFriendComponent } from './user-manager/add-friend/add-friend.component';
+import { PendingRequestsComponent } from './user-manager/pending-requests/pending-requests.component';
+import { CurrentFriendsComponent } from './user-manager/current-friends/current-friends.component';
 
 import { ListMenuComponent } from './toolbar/list-menu/list-menu.component';
 import { NewListComponent } from './toolbar/new-list/new-list.component';
@@ -50,10 +52,12 @@ import { MatSelectModule } from '@angular/material/select';
     ListMenuComponent,
     ListManagerComponent,
     RenameListComponent,
-    FriendsManagerComponent,
+    UserManagerComponent,
     AddFriendComponent,
     ShareListComponent,
-    ListDetailComponent
+    ListDetailComponent,
+    CurrentFriendsComponent,
+    PendingRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -80,9 +84,11 @@ import { MatSelectModule } from '@angular/material/select';
     ListManagerComponent,
     ListDetailComponent,
     RenameListComponent,
-    FriendsManagerComponent,
+    UserManagerComponent,
     AddFriendComponent,
-    ShareListComponent
+    ShareListComponent,
+    PendingRequestsComponent,
+    CurrentFriendsComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

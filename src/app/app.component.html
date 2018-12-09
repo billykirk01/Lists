@@ -1,5 +1,5 @@
 <div class="container">
-    <app-toolbar [user]="user" [friends]="friends" [pendingFriends]="pendingFriends" (LogIn)="logIn()" (LogOut)="logOut()"></app-toolbar>
+    <app-toolbar [user]="user" (LogIn)="logIn()"></app-toolbar>
     <app-input-field *ngIf="user" [user]="user"></app-input-field>
     <app-items *ngIf="user" [user]="user"></app-items>
 </div>

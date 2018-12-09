@@ -1,0 +1,25 @@
+<mat-nav-list>
+  <mat-list-item (click)="findFriends()">
+    <mat-icon mat-list-icon>group_add</mat-icon>
+    <h4 mat-line>Find friends</h4>
+    <p mat-line>Add friends so that you can share lists with them</p>
+  </mat-list-item>
+
+  <mat-list-item *ngIf="(this.pendingFriends | async)?.length as count" (click)="pendingRequests()">
+    <mat-icon mat-list-icon>notifications</mat-icon>
+    <h4 mat-line>Pending freind requests</h4>
+    <p mat-line>{{count}} pending freind request(s)</p>
+  </mat-list-item>
+
+  <mat-list-item (click)="currentFriends()">
+    <mat-icon mat-list-icon>people</mat-icon>
+    <h4 mat-line>Current friends</h4>
+    <p mat-line>Manage your current friends</p>
+  </mat-list-item>
+
+  <mat-list-item (click)="logOut()">
+    <mat-icon mat-list-icon>exit_to_app</mat-icon>
+    <h4 mat-line>Logout</h4>
+    <p mat-line>Logout of the application</p>
+  </mat-list-item>
+</mat-nav-list>

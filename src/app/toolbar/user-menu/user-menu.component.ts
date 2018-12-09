@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { user } from 'src/models/user';
-import { ItemsService } from 'src/app/core/items.service';
+import { AuthService } from 'src/app/core/auth.service';
 import { MatBottomSheet } from '@angular/material';
-import { FriendsManagerComponent } from 'src/app/friends-manager/freinds-manager.component';
+import { UserManagerComponent } from 'src/app/user-manager/user-manager.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -21,21 +21,14 @@ export class UserMenuComponent {
   @Output('LogIn')
   _logInButtonClicked = new EventEmitter();
 
-  @Output('LogOut')
-  _logOutButtonClicked = new EventEmitter();
+  constructor(private database: AuthService, private bottomSheet: MatBottomSheet) { }
 
-  constructor(private database: ItemsService, private bottomSheet: MatBottomSheet) { }
-
-  logInButtonClicked() {
+  logIn() {
     this._logInButtonClicked.emit()
   }
 
-  logOutButtonClicked() {
-    this._logOutButtonClicked.emit()
-  }
-
-  manageFriends() {
-    this.bottomSheet.open(FriendsManagerComponent, {
+  manageUser() {
+    this.bottomSheet.open(UserManagerComponent, {
       data: {
         user: this.user,
         friends: this.friends,

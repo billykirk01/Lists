@@ -14,9 +14,6 @@ export class AuthService {
 
   user: Observable<user>;
 
-  friends: Observable<user[]>;
-  pendingFriends: Observable<user[]>;
-
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
 
     this.user = this.afAuth.authState.pipe(
@@ -63,13 +60,13 @@ export class AuthService {
 
   getFriends(user: user) {
     if (user) {
-      this.friends = this.afs.collection('users', ref => ref.where('friends', 'array-contains', user.uid)).valueChanges()
+      return this.afs.collection('users', ref => ref.where('friends', 'array-contains', user.uid)).valueChanges()
     }
   }
 
   getPendingFriends(user: user) {
     if (user) {
-      this.pendingFriends = this.afs.collection('users', ref => ref.where('pendingFriends', 'array-contains', user.uid)).valueChanges()
+      return this.afs.collection('users', ref => ref.where('pendingFriends', 'array-contains', user.uid)).valueChanges()
     }
   }
 
@@ -121,7 +118,7 @@ export class AuthService {
   signOut() {
     this.afAuth.auth.signOut().then(() => {
       localStorage.clear();
-      window.location.reload();
+      // window.location.reload();
     })
 
   }
