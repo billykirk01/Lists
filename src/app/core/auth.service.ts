@@ -6,7 +6,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { firestore } from 'firebase/app'
 
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { user } from 'src/models/user';
 
 @Injectable({ providedIn: 'root' })
@@ -70,19 +70,31 @@ export class AuthService {
     }
   }
 
-  sendFriendRequest(user: user, email: string) {
+  searchForFriends(keyword: string) {
+    return this.afs.collection<user>('users').valueChanges().pipe(
+      map(users =>
+        users.filter(user => user.displayName.toLowerCase().includes(keyword.toLowerCase())
+        )
+      )
+    )
+  }
 
-    let recipientDoc = this.afs.collection('users', (ref) => ref.where('email', '==', email).limit(1)).valueChanges();
+  sendFriendRequest(user: user, recipientUid: string) {
 
-    recipientDoc.subscribe((_user: any) => {
-      if (_user[0].uid) {
-        const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
-        userRef.update({
-          pendingFriends: firestore.FieldValue.arrayUnion(_user[0].uid)
-        })
-      }
+    userRef.update({
+      pendingFriends: firestore.FieldValue.arrayUnion(recipientUid)
     });
+  }
+
+  undoFriendRequest(user: user, recipientUid: string) {
+
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+
+    userRef.update({
+      pendingFriends: firestore.FieldValue.arrayRemove(recipientUid)
+    })
   }
 
   acceptFriendRequest(user: user, uid: string) {
@@ -115,12 +127,15 @@ export class AuthService {
     })
   }
 
+  getSentRequests(user: user) {
+    return this.afs.collection('users').doc<user>(user.uid).valueChanges()
+  }
+
   signOut() {
     this.afAuth.auth.signOut().then(() => {
       localStorage.clear();
       // window.location.reload();
     })
-
   }
 
 }
