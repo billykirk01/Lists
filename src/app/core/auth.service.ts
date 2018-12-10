@@ -70,11 +70,17 @@ export class AuthService {
     }
   }
 
-  searchForFriends(keyword: string) {
+  searchForFriends(_user: user, keyword: string) {
     return this.afs.collection<user>('users').valueChanges().pipe(
       map(users =>
         users.filter(user => user.displayName.toLowerCase().includes(keyword.toLowerCase())
         )
+      ),
+      map(users =>
+        users.filter(user => !user.friends.includes(_user.uid))
+      ),
+      map(users =>
+        users.filter(user => user.uid != _user.uid)
       )
     )
   }

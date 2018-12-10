@@ -5,5 +5,6 @@ export interface user {
     uid?: string;
     currentList?: string;
     currentListName?: string;
+    friends?: string[];
     pendingFriends?: string[];
 }

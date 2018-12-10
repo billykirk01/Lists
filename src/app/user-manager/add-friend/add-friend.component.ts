@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { AuthService } from 'src/app/core/auth.service';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, empty } from 'rxjs';
 import { user } from 'src/models/user';
 
 @Component({
@@ -15,6 +15,8 @@ export class AddFriendComponent {
 
   currentRequests: string[];
 
+  resultsLength: number;
+
   constructor(private auth: AuthService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
     this.getPendingRequests()
   }
@@ -26,7 +28,14 @@ export class AddFriendComponent {
   }
 
   searchForFriends(keyword: string) {
-    this.friendsResults = this.auth.searchForFriends(keyword)
+    if (keyword == "") {
+      this.friendsResults = empty();
+    } else {
+      this.friendsResults = this.auth.searchForFriends(this.data.user, keyword)
+      this.friendsResults.subscribe((results) => {
+        this.resultsLength = results.length;
+      })
+    }
   }
 
   sendFriendRequest(recipientUid: string) {

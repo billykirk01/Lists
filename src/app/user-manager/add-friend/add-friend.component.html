@@ -1,14 +1,17 @@
 <div class="search-field-container">
-    <input #searchField class="field" (keydown)="searchForFriendsKeydown($event)" placeholder="Search for a freind">
+    <input #searchField class="field" (keydown)="searchForFriendsKeydown($event)" placeholder="Search for a friend">
     <button mat-button (click)="searchForFriends(searchField.value)">Find friends</button>
 </div>
 <mat-nav-list>
+    <mat-list-item *ngIf="resultsLength == 0">
+        <h4 mat-line>No results</h4>
+    </mat-list-item>
     <mat-list-item *ngFor="let friend of this.friendsResults | async">
         <img matListAvatar [src]="friend.photoURL">
         <h4 mat-line>{{friend.displayName}}</h4>
         <button mat-icon-button>
             <mat-icon (click)="sendFriendRequest(friend.uid)" *ngIf="currentRequests.indexOf(friend.uid) == -1">add</mat-icon>
-            <mat-icon (click)="undoFriendRequest(friend.uid)" *ngIf="currentRequests.indexOf(friend.uid) != -1">replay</mat-icon>
+            <mat-icon (click)="undoFriendRequest(friend.uid)" *ngIf="currentRequests.indexOf(friend.uid) != -1">undo</mat-icon>
         </button>
     </mat-list-item>
 </mat-nav-list>
