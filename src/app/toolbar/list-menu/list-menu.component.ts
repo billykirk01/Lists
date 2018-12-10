@@ -41,7 +41,8 @@ export class ListMenuComponent implements OnChanges {
         friends: this.friends,
         lists: this.lists,
       },
-      autoFocus: false
+      autoFocus: false,
+      restoreFocus: false
     });
   }
 
