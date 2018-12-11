@@ -1,9 +1,8 @@
 import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
-
+import { ItemsService } from '../core/items.service';
 import { Observable } from 'rxjs';
 import { item } from 'src/models/item';
 import { user } from 'src/models/user';
-import { ItemsService } from '../core/items.service';
 
 @Component({
   selector: 'app-items',
@@ -18,15 +17,11 @@ export class ItemsComponent implements OnChanges {
 
   completedItems: Observable<item[]>;
 
-  completedItemsMeta: {
-    completedItemsLength: Number
-  };
+  completedItemsMeta: { completedItemsLength: Number } = { completedItemsLength: 0 };
 
-  showCompleted: Boolean
+  showCompleted: Boolean;
 
-  constructor(private database: ItemsService) {
-    this.completedItemsMeta = { completedItemsLength: 0 }
-  }
+  constructor(private database: ItemsService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.user.currentValue.currentList && (!changes.user.previousValue || changes.user.currentValue.currentList != changes.user.previousValue.currentList)) {

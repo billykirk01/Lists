@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { firestore } from 'firebase/app'
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators'
-
-import { combineLatest, Observable } from 'rxjs';
 
 import { user } from 'src/models/user';
 import { list } from 'src/models/list';
 import { item } from 'src/models/item';
-
 
 @Injectable({
   providedIn: 'root'
@@ -20,48 +18,64 @@ export class ItemsService {
   constructor(private db: AngularFirestore) { }
 
   addItem(user: user, taskName: String) {
-    let itemsCollection = this.db.collection<item>('items');
-    const item: item = {
-      name: taskName,
-      owningUser: user.uid,
-      owningList: user.currentList,
-      addInstant: firestore.FieldValue.serverTimestamp(),
-      completed: false,
+    if (user && taskName) {
+      const itemsCollection = this.db.collection<item>('items');
+
+      const item: item = {
+        name: taskName,
+        owningUser: user.uid,
+        owningList: user.currentList,
+        addInstant: firestore.FieldValue.serverTimestamp(),
+        completed: false,
+      }
+
+      return itemsCollection.add(item)
     }
-    itemsCollection.add(item)
   }
 
   editItemName(item: item, newItemName: String) {
-    const itemRef: AngularFirestoreDocument<any> = this.db.doc(`items/${item.id}`);
-    const data = {
-      name: newItemName
+    if (item.id) {
+      const itemRef: AngularFirestoreDocument<any> = this.db.doc(`items/${item.id}`);
+
+      const data = {
+        name: newItemName
+      }
+
+      return itemRef.set(data, { merge: true })
     }
-    return itemRef.set(data, { merge: true })
   }
 
   editItemStatus(item: item, completed: Boolean) {
-    const itemRef: AngularFirestoreDocument<any> = this.db.doc(`items/${item.id}`);
-    const data = {
-      completed: completed,
+    if (item.id) {
+      const itemRef: AngularFirestoreDocument<any> = this.db.doc(`items/${item.id}`);
+
+      const data = {
+        completed: completed,
+      }
+
+      return itemRef.set(data, { merge: true })
     }
-    return itemRef.set(data, { merge: true })
   }
 
   deleteItem(item: item) {
-    this.db.doc<item>(`items/${item.id}`).delete();
+    if (item.id) {
+      return this.db.doc<item>(`items/${item.id}`).delete();
+    }
   }
 
   getIncompleteItems(user: user) {
-    let incompleteItemsCollection = this.db.collection<item>('items', ref => {
-      return ref.where('owningList', '==', user.currentList).where('completed', '==', false).orderBy('addInstant', 'asc')
-    });
-    return incompleteItemsCollection.snapshotChanges().pipe(map(incompleteTasks => {
-      return incompleteTasks.map(task => {
-        const data = task.payload.doc.data() as item;
-        const id = task.payload.doc.id;
-        return { id, ...data };
+    if (user.currentList) {
+      let incompleteItemsCollection = this.db.collection<item>('items', ref => {
+        return ref.where('owningList', '==', user.currentList).where('completed', '==', false).orderBy('addInstant', 'asc')
       });
-    }));
+      return incompleteItemsCollection.snapshotChanges().pipe(map(incompleteTasks => {
+        return incompleteTasks.map(task => {
+          const data = task.payload.doc.data() as item;
+          const id = task.payload.doc.id;
+          return { id, ...data } as item;
+        });
+      }));
+    }
   }
 
   getcompletedItems(user: user, completedItemsMetaData: any) {
@@ -73,69 +87,71 @@ export class ItemsService {
       return completedItems.map(task => {
         const data = task.payload.doc.data() as item;
         const id = task.payload.doc.id;
-        return { id, ...data };
+        return { id, ...data } as item;
       });
     }));
   }
 
   getLists(user: user) {
-    let listsCollection = this.db.collection<list>('lists', ref => {
-      return ref.where('owningUser', '==', user.uid).orderBy('addInstant', 'asc')
-    }).snapshotChanges().pipe(map(actions => {
-      return actions.map(a => {
-        const data = a.payload.doc.data() as list;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      });
-    }));;
+    if (user.uid) {
+      let listsCollection = this.db.collection<list>('lists', ref => {
+        return ref.where('owningUser', '==', user.uid).orderBy('addInstant', 'asc')
+      }).snapshotChanges().pipe(map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as list;
+          const id = a.payload.doc.id;
+          return { id, ...data } as list;
+        });
+      }));;
 
-    let sharedListsCollection = this.db.collection<list>('lists', ref => {
-      return ref.where('sharedUsers', 'array-contains', user.uid).orderBy('addInstant', 'asc')
-    }).snapshotChanges().pipe(map(actions => {
-      return actions.map(a => {
-        const data = a.payload.doc.data() as list;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      });
-    }));;
+      let sharedListsCollection = this.db.collection<list>('lists', ref => {
+        return ref.where('sharedUsers', 'array-contains', user.uid).orderBy('addInstant', 'asc')
+      }).snapshotChanges().pipe(map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as list;
+          const id = a.payload.doc.id;
+          return { id, ...data } as list;
+        });
+      }));;
 
-    return combineLatest<any[]>(listsCollection, sharedListsCollection).pipe(
-      map(arr => arr.reduce((acc, cur) => acc.concat(cur)))
-    )
-
-  }
-
-  getList(listID: string): Observable<list> {
-    return this.db.collection('lists').doc(listID).valueChanges() as Observable<list>
-  }
-
-  addList(user: user, listName: string) {
-    let listsCollection = this.db.collection<list>('lists');
-    var newListName = listName;
-    const list: list = {
-      name: newListName,
-      owningUser: user.uid,
-      owningUserName: user.displayName,
-      sharedUsers: [],
-      addInstant: firestore.FieldValue.serverTimestamp(),
+      return combineLatest<list[]>(listsCollection, sharedListsCollection).pipe(
+        map(arr => arr.reduce((acc, cur) => acc.concat(cur)))
+      )
     }
-    listsCollection.add(list).then(
-      (docRef) => {
+  }
+
+  getList(listID: string) {
+    if (listID) {
+      return this.db.collection('lists').doc<list>(listID).valueChanges();
+    }
+  }
+
+  addList(user: user, newListName: string) {
+    if (user && newListName) {
+      let listsCollection = this.db.collection<list>('lists');
+      const list: list = {
+        name: newListName,
+        owningUser: user.uid,
+        owningUserName: user.displayName,
+        sharedUsers: [],
+        addInstant: firestore.FieldValue.serverTimestamp(),
+      }
+      listsCollection.add(list).then((docRef) => {
         const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
 
         const userData: user = {
           currentList: docRef.id,
           currentListName: newListName
-
         }
 
         return userRef.set(userData, { merge: true })
-      }
-    )
+      })
+    }
   }
 
   renameList(user: user, list: list, listName: String) {
     const listRef: AngularFirestoreDocument<any> = this.db.doc(`lists/${list.id}`);
+
     listRef.update({
       name: listName
     })

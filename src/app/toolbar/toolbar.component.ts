@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { user } from 'src/models/user';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-toolbar',
