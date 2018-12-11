@@ -1,6 +1,6 @@
 <mat-form-field class="input-container">
   <mat-select placeholder="Friend" (selectionChange)="selectionChange($event)">
-    <mat-option *ngFor="let friend of this.data.friends | async" [value]="friend">
+    <mat-option *ngFor="let friend of this.data.friends" [value]="friend">
       {{friend.displayName}}
     </mat-option>
   </mat-select>

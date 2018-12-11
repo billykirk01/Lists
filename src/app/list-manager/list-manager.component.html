@@ -1,5 +1,5 @@
 <mat-nav-list>
-  <mat-list-item *ngFor="let list of this.data.lists | async">
+  <mat-list-item *ngFor="let list of this.data.lists">
     <mat-icon (click)="changeList(list)" mat-list-icon *ngIf="list.id==this.data.user?.currentList">bookmark</mat-icon>
     <mat-icon (click)="changeList(list)" mat-list-icon *ngIf="list.id!=this.data.user?.currentList">bookmark_border</mat-icon>
     <h4 mat-line (click)="changeList(list)">{{list.name}}</h4>
